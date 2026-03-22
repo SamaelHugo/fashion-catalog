@@ -743,12 +743,119 @@
 
 
     /* ================================================================
-       BRAND STORY SECTION (placeholder — dark bg)
+       BRAND STORY SECTION — dark, editorial
        ================================================================ */
     #brand-story {
       background-color: var(--color-bg-dark);
       color: var(--color-text-inverse);
-      padding: var(--space-section) 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .brand__grid {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      min-height: 700px;
+    }
+
+    /* Left — image */
+    .brand__image-col {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .brand__image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Right — text */
+    .brand__text-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px;
+    }
+
+    .brand__eyebrow {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: var(--weight-medium);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: var(--space-md);
+    }
+
+    .brand__title {
+      font-family: var(--font-heading);
+      font-size: 36px;
+      font-weight: var(--weight-light);
+      line-height: var(--leading-snug);
+      margin-bottom: var(--space-lg);
+    }
+
+    .brand__text {
+      font-family: var(--font-body);
+      font-size: 15px;
+      line-height: 1.8;
+      opacity: 0.7;
+      margin-bottom: var(--space-md);
+      max-width: 480px;
+    }
+
+    .brand__accent-line {
+      width: 40px;
+      height: 2px;
+      background-color: var(--color-accent);
+      margin-top: var(--space-md);
+      margin-bottom: var(--space-lg);
+    }
+
+    .brand__cta {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-text-inverse);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: rgba(255, 255, 255, 0.4);
+      transition: color var(--duration-fast) var(--ease-out),
+                  text-decoration-color var(--duration-fast) var(--ease-out);
+      display: inline-block;
+    }
+
+    .brand__cta:hover {
+      color: var(--color-accent);
+      text-decoration-color: var(--color-accent);
+    }
+
+    /* Scroll-reveal animation states */
+    .brand__image-col,
+    .brand__text-col {
+      opacity: 0;
+      transition: opacity 800ms var(--ease-out),
+                  transform 800ms var(--ease-out);
+    }
+
+    .brand__image-col {
+      transform: translateX(-40px);
+    }
+
+    .brand__text-col {
+      transform: translateX(40px);
+    }
+
+    .brand__image-col.is-revealed,
+    .brand__text-col.is-revealed {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    /* Stagger text column slightly */
+    .brand__text-col {
+      transition-delay: 150ms;
     }
 
 
@@ -1338,6 +1445,14 @@
       .modal {
         max-width: 760px;
       }
+
+      .brand__text-col {
+        padding: 60px 40px;
+      }
+
+      .brand__title {
+        font-size: 30px;
+      }
     }
 
 
@@ -1442,6 +1557,43 @@
         font-size: 18px;
       }
 
+      /* Brand story — single column */
+      .brand__grid {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .brand__image-col {
+        aspect-ratio: 16 / 9;
+      }
+
+      .brand__image {
+        height: 100%;
+      }
+
+      .brand__text-col {
+        padding: var(--space-lg) var(--space-sm);
+      }
+
+      .brand__title {
+        font-size: 26px;
+      }
+
+      .brand__text {
+        font-size: 14px;
+      }
+
+      /* Disable horizontal slide on mobile, just fade */
+      .brand__image-col,
+      .brand__text-col {
+        transform: translateY(20px);
+      }
+
+      .brand__image-col.is-revealed,
+      .brand__text-col.is-revealed {
+        transform: translateY(0);
+      }
+
       /* Cart sidebar full width */
       .cart-sidebar {
         width: 100%;
@@ -1536,8 +1688,25 @@
   <!-- ============================================================
        BRAND STORY SECTION (placeholder)
        ============================================================ -->
-  <section id="brand-story" class="section">
-    <!-- Content will be added in a later prompt -->
+  <section id="brand-story">
+    <div class="brand__grid">
+      <div class="brand__image-col">
+        <img
+          class="brand__image"
+          src="https://images.pexels.com/photos/6764007/pexels-photo-6764007.jpeg?auto=compress&cs=tinysrgb&w=1200"
+          alt="ÉKOS — editorial"
+          loading="lazy"
+        >
+      </div>
+      <div class="brand__text-col">
+        <span class="brand__eyebrow">О бренде</span>
+        <h2 class="brand__title">Одежда, которая говорит тихо</h2>
+        <p class="brand__text">ÉKOS — это про осознанный подход к гардеробу. Мы создаём вещи, которые не кричат о себе, но запоминаются. Каждая модель продумана так, чтобы работать в любом контексте: от утренней встречи до вечернего ужина.</p>
+        <p class="brand__text">Натуральные ткани, честное производство, минимум лишнего. Мы верим, что лучший стиль — тот, который не нужно объяснять.</p>
+        <div class="brand__accent-line"></div>
+        <a href="#catalog" class="brand__cta">Смотреть коллекцию →</a>
+      </div>
+    </div>
   </section>
 
 
@@ -2149,6 +2318,24 @@
             document.body.classList.remove('no-scroll');
           }
         }
+      });
+
+
+      /* -----------------------------------------------------------
+         SCROLL REVEAL — Intersection Observer
+         ----------------------------------------------------------- */
+      var revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      // Observe brand story columns
+      document.querySelectorAll('.brand__image-col, .brand__text-col').forEach(function(el) {
+        revealObserver.observe(el);
       });
 
 

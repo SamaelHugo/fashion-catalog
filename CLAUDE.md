@@ -30,5 +30,5 @@ Demo project for web developer portfolio. Must look like a real high-end brand s
 - [x] Product catalog with filters
 - [x] Product quick-view modal
 - [x] Mini cart sidebar
-- [ ] Brand story section
+- [x] Brand story section
 - [ ] CTA + Footer
