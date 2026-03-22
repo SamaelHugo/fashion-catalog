@@ -1019,12 +1019,12 @@
     .cart-overlay {
       position: fixed;
       inset: 0;
-      background-color: var(--color-backdrop);
+      background-color: rgba(0, 0, 0, 0.4);
       z-index: var(--z-cart);
       opacity: 0;
       visibility: hidden;
-      transition: opacity var(--duration-base) var(--ease-out),
-                  visibility var(--duration-base);
+      transition: opacity 300ms var(--ease-out),
+                  visibility 300ms;
     }
 
     .cart-overlay.is-open {
@@ -1037,32 +1037,45 @@
       top: 0;
       right: 0;
       width: 420px;
-      max-width: 100%;
       height: 100vh;
       background-color: var(--color-bg);
       z-index: calc(var(--z-cart) + 1);
       display: flex;
       flex-direction: column;
       transform: translateX(100%);
-      transition: transform var(--duration-slow) var(--ease-elegant);
+      transition: transform 300ms var(--ease-out);
     }
 
     .cart-sidebar.is-open {
       transform: translateX(0);
     }
 
+    /* Header */
     .cart__header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: var(--space-md) var(--space-lg);
       border-bottom: 1px solid var(--color-border-light);
+      flex-shrink: 0;
+    }
+
+    .cart__title-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
     }
 
     .cart__title {
       font-family: var(--font-heading);
-      font-size: var(--text-xl);
+      font-size: 24px;
       font-weight: var(--weight-regular);
+    }
+
+    .cart__header-count {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-text-light);
     }
 
     .cart__close {
@@ -1070,31 +1083,40 @@
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      transition: opacity var(--duration-fast) var(--ease-out);
+      font-size: 20px;
+      font-weight: var(--weight-light);
+      color: var(--color-text-light);
+      transition: color var(--duration-fast) var(--ease-out);
     }
 
     .cart__close:hover {
-      opacity: 0.6;
+      color: var(--color-text);
     }
 
-    .cart__close svg {
-      width: 18px;
-      height: 18px;
-    }
-
+    /* Scrollable items area */
     .cart__items {
       flex: 1;
       overflow-y: auto;
-      padding: var(--space-md) var(--space-lg);
+      padding: 0 var(--space-lg);
     }
 
     /* Individual cart item */
     .cart-item {
-      display: grid;
-      grid-template-columns: 80px 1fr;
-      gap: var(--space-sm);
-      padding: var(--space-sm) 0;
+      display: flex;
+      gap: 16px;
+      padding: 20px 0;
       border-bottom: 1px solid var(--color-border-light);
+      transition: opacity 300ms var(--ease-out),
+                  max-height 300ms var(--ease-out);
+      max-height: 200px;
+      overflow: hidden;
+    }
+
+    .cart-item.is-removing {
+      opacity: 0;
+      max-height: 0;
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     .cart-item__image {
@@ -1102,79 +1124,143 @@
       height: 100px;
       object-fit: cover;
       background-color: var(--color-bg-alt);
+      flex-shrink: 0;
     }
 
-    .cart-item__info {
+    .cart-item__body {
+      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      min-width: 0;
     }
 
     .cart-item__name {
-      font-family: var(--font-heading);
-      font-size: var(--text-base);
-      font-weight: var(--weight-regular);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: var(--weight-medium);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
       margin-bottom: 4px;
+      line-height: var(--leading-snug);
     }
 
-    .cart-item__meta {
-      font-size: var(--text-xs);
+    .cart-item__size {
+      font-family: var(--font-body);
+      font-size: 12px;
       color: var(--color-text-light);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .cart-item__price {
-      font-size: var(--text-sm);
+      font-family: var(--font-body);
+      font-size: 14px;
       font-weight: var(--weight-medium);
       color: var(--color-accent);
+      margin-bottom: 10px;
     }
 
+    /* Quantity controls */
+    .cart-item__qty {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .cart-item__qty-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: var(--weight-light);
+      color: var(--color-text);
+      transition: border-color var(--duration-fast) var(--ease-out);
+    }
+
+    .cart-item__qty-btn:hover {
+      border-color: var(--color-text);
+    }
+
+    .cart-item__qty-val {
+      width: 32px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: var(--weight-medium);
+      border-top: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    /* Remove button */
     .cart-item__remove {
-      font-size: var(--text-xs);
+      flex-shrink: 0;
+      align-self: flex-start;
+      margin-top: 20px;
+      font-size: 16px;
       color: var(--color-text-light);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      margin-top: 4px;
       cursor: pointer;
       transition: color var(--duration-fast) var(--ease-out);
+      line-height: 1;
     }
 
     .cart-item__remove:hover {
       color: var(--color-text);
     }
 
-    /* Cart empty state */
+    /* Empty state */
     .cart__empty {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100%;
-      color: var(--color-text-light);
       text-align: center;
+      padding: var(--space-xl) 0;
     }
 
-    .cart__empty-text {
+    .cart__empty-title {
       font-family: var(--font-heading);
-      font-size: var(--text-lg);
-      font-style: italic;
-      margin-bottom: var(--space-sm);
+      font-size: 20px;
+      font-weight: var(--weight-regular);
+      color: var(--color-text-light);
+      margin-bottom: 16px;
     }
 
-    /* Cart footer */
+    .cart__empty-link {
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: var(--color-accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .cart__empty-link:hover {
+      color: var(--color-accent-hover);
+    }
+
+    /* Footer — sticky bottom */
     .cart__footer {
-      padding: var(--space-md) var(--space-lg);
+      padding: var(--space-md) var(--space-lg) var(--space-lg);
       border-top: 1px solid var(--color-border-light);
+      flex-shrink: 0;
     }
 
     .cart__total-row {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      margin-bottom: var(--space-md);
+      align-items: baseline;
+      margin-bottom: 8px;
     }
 
     .cart__total-label {
+      font-family: var(--font-body);
       font-size: var(--text-xs);
       font-weight: var(--weight-medium);
       letter-spacing: var(--tracking-widest);
@@ -1183,8 +1269,15 @@
 
     .cart__total-value {
       font-family: var(--font-heading);
-      font-size: var(--text-xl);
+      font-size: 20px;
       font-weight: var(--weight-semibold);
+    }
+
+    .cart__shipping-note {
+      font-family: var(--font-body);
+      font-size: 12px;
+      color: var(--color-text-light);
+      margin-bottom: var(--space-md);
     }
 
     .cart__checkout-btn {
@@ -1192,16 +1285,36 @@
       padding: 18px;
       background-color: var(--color-text);
       color: var(--color-text-inverse);
+      font-family: var(--font-body);
       font-size: var(--text-xs);
       font-weight: var(--weight-medium);
-      letter-spacing: var(--tracking-widest);
+      letter-spacing: 2px;
       text-transform: uppercase;
       text-align: center;
-      transition: background-color var(--duration-fast) var(--ease-out);
+      transition: background-color var(--duration-base) var(--ease-out),
+                  color var(--duration-base) var(--ease-out);
+      margin-bottom: 12px;
     }
 
     .cart__checkout-btn:hover {
-      background-color: #333;
+      background-color: var(--color-accent);
+      color: var(--color-text);
+    }
+
+    .cart__continue {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--color-text-light);
+      text-align: center;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      transition: color var(--duration-fast) var(--ease-out);
+    }
+
+    .cart__continue:hover {
+      color: var(--color-text);
     }
 
 
@@ -1484,18 +1597,16 @@
   <div class="cart-overlay" id="cartOverlay"></div>
   <aside class="cart-sidebar" id="cartSidebar">
     <div class="cart__header">
-      <h3 class="cart__title">Корзина</h3>
-      <button class="cart__close" id="cartClose" aria-label="Закрыть корзину">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
+      <div class="cart__title-wrap">
+        <h3 class="cart__title">Корзина</h3>
+        <span class="cart__header-count" id="cartHeaderCount"></span>
+      </div>
+      <button class="cart__close" id="cartClose" aria-label="Закрыть корзину">&#x2715;</button>
     </div>
     <div class="cart__items" id="cartItems">
       <div class="cart__empty" id="cartEmpty">
-        <p class="cart__empty-text">Корзина пуста</p>
-        <p class="label" style="color: var(--color-text-light);">Добавьте что-нибудь из каталога</p>
+        <p class="cart__empty-title">Корзина пуста</p>
+        <a href="#catalog" class="cart__empty-link" id="cartEmptyLink">Перейти в каталог</a>
       </div>
     </div>
     <div class="cart__footer" id="cartFooter" style="display: none;">
@@ -1503,7 +1614,9 @@
         <span class="cart__total-label">Итого</span>
         <span class="cart__total-value" id="cartTotal">0 ₽</span>
       </div>
+      <p class="cart__shipping-note">Доставка рассчитывается при оформлении</p>
       <button class="cart__checkout-btn">Оформить заказ</button>
+      <button class="cart__continue" id="cartContinue">Продолжить покупки</button>
     </div>
   </aside>
 
@@ -1633,14 +1746,17 @@
       const navLinks       = document.getElementById('navLinks');
       const menuToggle     = document.getElementById('menuToggle');
       const cartToggle     = document.getElementById('cartToggle');
-      const cartOverlay    = document.getElementById('cartOverlay');
-      const cartSidebar    = document.getElementById('cartSidebar');
-      const cartClose      = document.getElementById('cartClose');
-      const cartItems      = document.getElementById('cartItems');
-      const cartEmpty      = document.getElementById('cartEmpty');
-      const cartFooter     = document.getElementById('cartFooter');
-      const cartCount      = document.getElementById('cartCount');
-      const cartTotal      = document.getElementById('cartTotal');
+      const cartOverlay     = document.getElementById('cartOverlay');
+      const cartSidebar     = document.getElementById('cartSidebar');
+      const cartClose       = document.getElementById('cartClose');
+      const cartItems       = document.getElementById('cartItems');
+      const cartEmpty       = document.getElementById('cartEmpty');
+      const cartEmptyLink   = document.getElementById('cartEmptyLink');
+      const cartFooter      = document.getElementById('cartFooter');
+      const cartCount       = document.getElementById('cartCount');
+      const cartHeaderCount = document.getElementById('cartHeaderCount');
+      const cartTotal       = document.getElementById('cartTotal');
+      const cartContinue    = document.getElementById('cartContinue');
       const modalOverlay   = document.getElementById('modalOverlay');
       const modalClose     = document.getElementById('modalClose');
       const modalImage     = document.getElementById('modalImage');
@@ -1893,7 +2009,7 @@
 
 
       /* -----------------------------------------------------------
-         CART SIDEBAR
+         CART SIDEBAR — open / close
          ----------------------------------------------------------- */
       function openCart() {
         cartOverlay.classList.add('is-open');
@@ -1911,15 +2027,49 @@
       cartClose.addEventListener('click', closeCart);
       cartOverlay.addEventListener('click', closeCart);
 
+      // "Продолжить покупки" closes cart
+      cartContinue.addEventListener('click', closeCart);
+
+      // "Перейти в каталог" closes cart and scrolls
+      cartEmptyLink.addEventListener('click', function() {
+        closeCart();
+      });
+
 
       /* -----------------------------------------------------------
          CART STATE & RENDERING
          ----------------------------------------------------------- */
-      function updateCart() {
+
+      /** Remove a cart item with animation */
+      function removeCartItem(index) {
+        var itemEls = cartItems.querySelectorAll('.cart-item');
+        var el = itemEls[index];
+        if (el) {
+          el.classList.add('is-removing');
+          el.addEventListener('transitionend', function() {
+            cart.splice(index, 1);
+            renderCart();
+          }, { once: true });
+        } else {
+          cart.splice(index, 1);
+          renderCart();
+        }
+      }
+
+      /** Change quantity of a cart item (min 1) */
+      function changeQty(index, delta) {
+        var newQty = cart[index].qty + delta;
+        if (newQty < 1) return;
+        cart[index].qty = newQty;
+        renderCart();
+      }
+
+      /** Full cart re-render */
+      function renderCart() {
         var totalItems = cart.reduce(function(sum, item) { return sum + item.qty; }, 0);
         var totalPrice = cart.reduce(function(sum, item) { return sum + item.product.price * item.qty; }, 0);
 
-        // Update badge
+        // Nav badge
         cartCount.textContent = totalItems;
         if (totalItems > 0) {
           cartCount.classList.add('is-visible');
@@ -1927,10 +2077,13 @@
           cartCount.classList.remove('is-visible');
         }
 
-        // Update total
+        // Header count "(3)"
+        cartHeaderCount.textContent = totalItems > 0 ? '(' + totalItems + ')' : '';
+
+        // Total price
         cartTotal.textContent = formatPrice(totalPrice);
 
-        // Show/hide empty state and footer
+        // Empty state vs items
         if (cart.length === 0) {
           cartEmpty.style.display = 'flex';
           cartFooter.style.display = 'none';
@@ -1939,32 +2092,49 @@
           cartFooter.style.display = 'block';
         }
 
-        // Render cart items
-        // Remove existing items (keep empty state div)
+        // Clear existing item elements
         cartItems.querySelectorAll('.cart-item').forEach(function(el) {
           el.remove();
         });
 
+        // Render each item
         cart.forEach(function(item, index) {
           var el = document.createElement('div');
           el.className = 'cart-item';
+
           el.innerHTML =
             '<img class="cart-item__image" src="' + item.product.image + '" alt="' + item.product.name + '">' +
-            '<div class="cart-item__info">' +
+            '<div class="cart-item__body">' +
               '<p class="cart-item__name">' + item.product.name + '</p>' +
-              '<p class="cart-item__meta">Размер: ' + item.size + ' · Кол-во: ' + item.qty + '</p>' +
+              '<p class="cart-item__size">Размер: ' + item.size + '</p>' +
               '<span class="cart-item__price">' + formatPrice(item.product.price * item.qty) + '</span>' +
-              '<button class="cart-item__remove" data-index="' + index + '">Удалить</button>' +
-            '</div>';
+              '<div class="cart-item__qty">' +
+                '<button class="cart-item__qty-btn" data-action="dec" aria-label="Уменьшить">−</button>' +
+                '<span class="cart-item__qty-val">' + item.qty + '</span>' +
+                '<button class="cart-item__qty-btn" data-action="inc" aria-label="Увеличить">+</button>' +
+              '</div>' +
+            '</div>' +
+            '<button class="cart-item__remove" aria-label="Удалить">&#x2715;</button>';
 
+          // Quantity buttons
+          el.querySelector('[data-action="dec"]').addEventListener('click', function() {
+            changeQty(index, -1);
+          });
+          el.querySelector('[data-action="inc"]').addEventListener('click', function() {
+            changeQty(index, 1);
+          });
+
+          // Remove button
           el.querySelector('.cart-item__remove').addEventListener('click', function() {
-            cart.splice(index, 1);
-            updateCart();
+            removeCartItem(index);
           });
 
           cartItems.insertBefore(el, cartEmpty);
         });
       }
+
+      // Alias for backward compat with add-to-cart call
+      var updateCart = renderCart;
 
 
       /* -----------------------------------------------------------
