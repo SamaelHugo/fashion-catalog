@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -L -o hero-video.mp4 \"https://videos.pexels.com/video-files/7677321/7677321-hd_1920_1080_25fps.mp4\")"
+    ]
+  }
+}

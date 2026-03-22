@@ -25,10 +25,10 @@ Demo project for web developer portfolio. Must look like a real high-end brand s
 - NOT colorful, NOT playful — think COS, Arket, The Row
 
 ## Progress
-- [ ] Design system + nav
-- [ ] Hero with video background
-- [ ] Product catalog with filters
-- [ ] Product quick-view modal
-- [ ] Mini cart sidebar
+- [x] Design system + nav
+- [x] Hero with video background
+- [x] Product catalog with filters
+- [x] Product quick-view modal
+- [x] Mini cart sidebar
 - [ ] Brand story section
 - [ ] CTA + Footer
